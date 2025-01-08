@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>write</title>
+<script src="/js/tinymce/tinymce.min.js"></script>
+<style>
+#formDiv{
+	margin-left: 30px;
+	margin-top: 30px;
+}
+</style>
+</head>
+<body>
+	<div id="formDiv">
+		<form method="post">
+			<textarea id="editor" name="editor"></textarea>
+		</form>
+	</div>
+	<script type="text/javascript">
+		window.onload=()=>{
+			tinymce.init({
+				license_key: "gpl",
+				selector: "#editor",
+				width: 850,
+				height: 600,
+				plugins: ["image", "media", "emoticons"],
+				menubar: "",
+				toolbar: "undo redo | bold italic | alignleft "+
+					"aligncenter alignright alignjustify outdent indent "+
+					"| image  media | forecolor backcolor emoticons"
+			});
+		}
+	</script>
+</body>
+</html>
