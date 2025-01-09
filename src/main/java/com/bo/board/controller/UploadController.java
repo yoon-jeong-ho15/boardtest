@@ -15,6 +15,7 @@ public class UploadController {
 	public ResponseEntity<String> uploadFile(
 			@RequestParam("file") MultipartFile file){
 		
-		return null;
+		//임시
+		return ResponseEntity.ok("/uploads/" + "uniqueFilename");
 	}
 }
