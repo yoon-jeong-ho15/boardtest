@@ -6,7 +6,7 @@
 <script src="/js/tinymce/tinymce.min.js"></script>
 <style>
 #formDiv{
-	margin-left: 30px;
+	margin-left: 40px;
 	margin-top: 30px;
 }
 </style>
@@ -28,7 +28,38 @@
 				menubar: "",
 				toolbar: "undo redo | bold italic | alignleft "+
 					"aligncenter alignright alignjustify outdent indent "+
-					"| image  media | forecolor backcolor emoticons"
+					"| image  media | forecolor backcolor emoticons",
+				file_picker_types: "image",
+				file_picker_callback: function(
+					callback, value, meta) {
+					const input = document.createElement("input");
+					input.setAttribute("type", "file");
+					input.setAttribute("accept", "image");
+
+					input.onchange = async function(){
+						const file = this.files[0];
+						const formData = new FormData();
+						formData.append("file",file);
+
+						try{
+							const response = await fetch("api/upload");
+
+							if(!response.ok){
+							throw new Error("upload failed");
+							}
+
+							const data = await response.json();
+							//컨트롤러에서 반환하는 return ResponseEntity.ok("/uploads/" + "uniqueFilename"); 이게 json객체라는 뜻.
+
+							callback(data.imageUrl);
+						}catch(error){
+							console.error("file upload failed : ", error);
+						}
+					}
+					input.click();//
+				},
+				statusbar: false,
+				promotion: false
 			});
 		}
 	</script>
