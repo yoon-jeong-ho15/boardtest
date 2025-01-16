@@ -8,60 +8,98 @@
 #formDiv{
 	margin-left: 40px;
 	margin-top: 30px;
+    width: 80vw;
+    min-width: 600px;
+}
+#top{
+    display: flex;
+    flex-direction: row;
+}
+#top1{
+    display:flex;
+    flex-direction: column;
+}
+#thumbnailDiv{
+    width: 250px;
+    height: 250px;
+    background: #dfdfdf;
 }
 </style>
 </head>
 <body>
 	<div id="formDiv">
-		<form method="post">
+		<form id="boardForm">
+            <div id="top">
+                <div id="top1">
+                    <label>title</label>
+                    <input type="text" name="boardTitle">
+                    <label>writer</label>
+                    <input type="text" name="boardWriter">
+                    <label>thumbnail</label>
+                    <input type="file" name="thumbnail" accept="image/*">
+                </div>
+                <div id="thumbnailDiv">
+
+                </div>
+            </div>
 			<textarea id="editor" name="editor"></textarea>
+            <button type="button" onclick="insertBoard()">submit</button>
+            <button type="reset">reset</button>
 		</form>
 	</div>
 	<script type="text/javascript">
-		window.onload=()=>{
-			tinymce.init({
-				license_key: "gpl",
-				selector: "#editor",
-				width: 850,
-				height: 600,
-				plugins: ["image", "media", "emoticons"],
-				menubar: "",
-				toolbar: "undo redo | bold italic | alignleft "+
-					"aligncenter alignright alignjustify outdent indent "+
-					"| image  media | forecolor backcolor emoticons",
-				file_picker_types: "image",
-				file_picker_callback: function(
-					callback, value, meta) {
-					const input = document.createElement("input");
-					input.setAttribute("type", "file");
-					input.setAttribute("accept", "image");
+		window.onload = () => {
+            tinymce.init({
+                license_key: "gpl",
+                selector: "#editor",
+                resize: "both",
+                height: 600,
+                plugins: ["image", "media", "emoticons"],
+                menubar: false,
+                toolbar: "undo redo | bold italic | alignleft "+
+                    "aligncenter alignright alignjustify outdent indent "+
+                    "| image  media | forecolor backcolor emoticons",
+                file_picker_types: "image",
+                file_picker_callback: function(callback, value, meta){
+                    const input = document.createElement("input");
+                    input.setAttribute("type", "file");
+                    input.setAttribute("accept", "image/*");
 
-					input.onchange = async function(){
-						const file = this.files[0];
-						const formData = new FormData();
-						formData.append("file",file);
+                    input.onchange = async function(){
+                        const file = this.files[0];
+                        const formData = new FormData();
+                        formData.append("image", file);
 
-						try{
-							const response = await fetch("api/upload");
+                        try{
+                            const response = await fetch("/api/upload", {
+                                method: "POST",
+                                body: formData
+                            });
 
-							if(!response.ok){
-							throw new Error("upload failed");
-							}
+                            if (!response.ok){
+                                throw new Error("Upload failed");
+                            }
 
-							const data = await response.json();
-							//컨트롤러에서 반환하는 return ResponseEntity.ok("/uploads/" + "uniqueFilename"); 이게 json객체라는 뜻.
+                            const path = await response.text();
 
-							callback(data.imageUrl);
-						}catch(error){
-							console.error("file upload failed : ", error);
-						}
-					}
-					input.click();//
-				},
-				statusbar: false,
-				promotion: false
-			});
-		}
+                            callback(path, {title: file.name});
+                        } catch(error){
+                            console.error("upload failed : ", error);
+                        }
+                    }
+                    input.click();
+                },
+                statusbar: false,
+                promotion: false
+            });
+        }
+
+        const insertBoard = function(){
+            const form = document.getElementById("boardForm");
+            form.action="/board/insert";
+            form.method="POST";
+            form.submit();
+        }
 	</script>
 </body>
 </html>
