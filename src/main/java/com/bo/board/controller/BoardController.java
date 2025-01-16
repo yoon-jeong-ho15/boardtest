@@ -1,9 +1,12 @@
 package com.bo.board.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +27,8 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public String toList() {
+		ArrayList<Board> blist = bService.selectList();
+		
 		return "views/list";
 	}
 	
@@ -37,9 +42,17 @@ public class BoardController {
 			@RequestParam("editor") String content,
 			Model model) {
 		
-		model.addAttribute(b);
-		model.addAttribute(content);
+		b.setBoardContent(content);
+		int result = bService.insertBoard(b);
 		
-		return "/views/detail";
+		return String.format("redirect:/board/detail/%d", b.getBoardId());
 	}
+	
+	@GetMapping("/detail/{bid}")
+	public String selectBoard(@PathVariable("bid") int bid,
+			Model model) {
+		
+		return "";
+	}
+	
 }

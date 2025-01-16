@@ -6,4 +6,15 @@
 		insert into image
 		values(seq_img.nextval, #{originalName}, #{renameName}, 0)
 	</insert>
+	<select id="selectList">
+		select * from board
+	</select>
+	<insert id="insertBoard">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardId">
+			select seq_bid.nextval from dual
+		</selectKey>
+			insert into board
+			values(#{boardId}, #{boardTitle}, #{boardWriter}, #{boardContent},
+				sysdate, 0)
+	</insert>
 </mapper>
