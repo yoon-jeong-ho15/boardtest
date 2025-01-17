@@ -9,8 +9,8 @@ import lombok.ToString;
 @ToString
 public class Image {
 	private int imageId;
-	private String originalName;
 	private String renameName;
+	private String imageAlt;
 	private int refBoardId;
 	private int thumbnail;
 }

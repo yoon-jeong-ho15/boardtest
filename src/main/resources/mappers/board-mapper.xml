@@ -4,10 +4,11 @@
 <mapper namespace="com.bo.board.model.mapper.BoardMapper">
 	<insert id="insertImg">
 		insert into image
-		values(seq_img.nextval, #{originalName}, #{renameName}, 0)
+		values(seq_img.nextval, #{renameName}, #{imageAlt}, #{refBoardId}, 0)
 	</insert>
 	<select id="selectList">
 		select * from board
+		order by board_id desc
 	</select>
 	<insert id="insertBoard">
 		<selectKey order="BEFORE" resultType="_int" keyProperty="boardId">
@@ -17,4 +18,18 @@
 			values(#{boardId}, #{boardTitle}, #{boardWriter}, #{boardContent},
 				sysdate, 0)
 	</insert>
+	<select id="selectBoard">
+		select * from board
+		where board_id = #{bid}
+	</select>
+	<insert id="insertImage">
+		insert into image
+		values(seq_img.nextval, #{renameName}, 
+			#{imageAlt}, #{refBoardId}, #{thumbnail})
+	</insert>
+	<update id="updateBoard">
+		update board
+		set board_title=#{boardTitle}, board_content=#{boardContent}
+		where board_id=#{boardId}
+	</update>
 </mapper>

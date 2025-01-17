@@ -3,9 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	section{
+		background: #eff9e5;
+		padding: 30px;
+	}
+</style>
 </head>
 <body>
 <h3 th:text="${b.boardTitle}"></h3>
-<div th:html="${content}">
+<h4 th:text="${b.boardWriter}"></h4>
+<h4 th:text="${b.createDate}"></h4>
+<div>
+	<section th:utext="${b.boardContent}"></section>
+</div>
 </body>
 </html>

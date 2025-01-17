@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="https://thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Board List</title>
@@ -25,23 +25,32 @@ tr>td:nth-child(3){
 	<div>
 		<table>
 			<thead>
-				<th>제목</th>
-				<th>작성일</th>
-				<th>조회수</th>
+				<th width="300px">제목</th>
+				<th width="100px">작성자</th>
+				<th width="100px">작성일</th>
+				<th width="50px">조회수</th>
 			</thead>
 			<tbody>
-				<tr>
-					<td>가나다라마바사아자차카타파하</td>
-					<td>2024년 3월 1일</td>
-					<td>33</td>
-				</tr>
-					<td>가나다라마바사아자차카타파하</td>
-					<td>2024년 2월 28일</td>
-					<td>13</td>
+				<tr th:each="b : ${blist}">
+					<input type="hidden" th:value="${b.boardId}" id="boardId" name="boardId">
+					<td>[[${b.boardTitle}]]</td>
+					<td>[[${b.boardWriter}]]</td>
+					<td>[[${b.createDate}]]</td>
+					<td>[[${b.boardCount}]]</td>
 				</tr>
 			</tbody>
 		</table>
 		<button onclick="location.href='/board/write'">write</button>
 	</div>
+	<script type="text/javascript" th:inline="javascript">
+		const trs = document.getElementsByTagName("tr");
+		for (const tr of trs){
+			tr.addEventListener("click", function(){
+				const bid = document.getElementById("boardId").value;
+				console.log(bid, typeof bid);
+				location.href="/board/detail/"+bid;
+			});
+		}
+	</script>
 </body>
 </html>

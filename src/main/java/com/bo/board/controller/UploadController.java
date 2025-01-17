@@ -20,7 +20,7 @@ public class UploadController {
 		
 	@PostMapping("/upload")
 	@ResponseBody
-	public ResponseEntity<String> insertImage(
+	public ResponseEntity<String> saveTemp(
 			@RequestParam("image") MultipartFile file,
 			@RequestParam(value="thumbnail", defaultValue="0") int thum
 			) {
