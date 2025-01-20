@@ -46,8 +46,7 @@ tr>td:nth-child(3){
 		const trs = document.getElementsByTagName("tr");
 		for (const tr of trs){
 			tr.addEventListener("click", function(){
-				const bid = document.getElementById("boardId").value;
-				console.log(bid, typeof bid);
+				const bid = this.querySelector("input").value;
 				location.href="/board/detail/"+bid;
 			});
 		}
