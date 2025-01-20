@@ -69,6 +69,8 @@
                         const file = this.files[0];
                         const formData = new FormData();
                         formData.append("image", file);
+                        const originalName = file.name.substring(file.name.lastIndexOf("/") + 1);
+                        formData.append("originalName", originalName);
 
                         try{
                             const response = await fetch("/api/upload", {

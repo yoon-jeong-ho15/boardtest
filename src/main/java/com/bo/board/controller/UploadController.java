@@ -22,8 +22,9 @@ public class UploadController {
 	@ResponseBody
 	public ResponseEntity<String> saveTemp(
 			@RequestParam("image") MultipartFile file,
-			@RequestParam(value="thumbnail", defaultValue="0") int thum
-			) {
+			@RequestParam(value="thumbnail", defaultValue="0") int thum,
+			@RequestParam("originalName") String originalName) {
+		System.out.println(originalName);
 		String filename = uService.saveTemp(file, thum);
 		
 		return ResponseEntity.ok("/temp/"+filename);
